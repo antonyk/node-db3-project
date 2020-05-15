@@ -9,8 +9,6 @@ module.exports = {
   remove
 }
 
-const schemes = db('schemes');
-
 function find() {
   return db('schemes');
 }
@@ -31,8 +29,12 @@ function findSteps(id) {
 function add(scheme) {
   return db('schemes').insert(scheme, 'id')
     .then(result => {
+      console.log('add 2', result)
       if (result && result.length>0)
-        return db('schemes').findById(result[0]);
+        return findById(result[0]);
+    })
+    .catch(error => {
+      console.log('error:', error)
     })
 }
 
@@ -40,7 +42,7 @@ function update(changes, id) {
   return db('schemes').update(changes, 'id').where({id})
     .then(result => {
       if (result && result.length>0)
-        return db('schemes').findById(result[0]);
+        return findById(result[0]);
     })
 }
 
